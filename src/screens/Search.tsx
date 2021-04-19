@@ -1,7 +1,7 @@
 import React from "react";
 import {useQuery} from "react-query";
-import {Grid, Stack, InputGroup, InputLeftElement} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
+import {Grid, Stack, InputGroup, InputLeftElement, Text} from "@chakra-ui/react";
 import {SearchIcon} from "@chakra-ui/icons";
 
 import api from "../api";
@@ -12,7 +12,7 @@ import DebouncedInput from "../components/DebouncedInput";
 
 const SearchScreen: React.FC = () => {
   const [query, setQuery] = React.useState<string>("");
-  const {data, isLoading} = useQuery<Country[]>(query, () =>
+  const {data, isLoading, isError} = useQuery<Country[]>(query, () =>
     query ? api.search(query) : api.list(),
   );
 
@@ -31,6 +31,10 @@ const SearchScreen: React.FC = () => {
       </InputGroup>
       {isLoading ? (
         <Spinner />
+      ) : isError ? (
+        <Text>Something failed</Text>
+      ) : !data ? (
+        <Text>No data found</Text>
       ) : (
         <Grid gridGap={12} templateColumns="repeat(auto-fill, minmax(320px, 1fr))">
           {data?.map((country) => (

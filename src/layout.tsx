@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Container, Stack, Text, useColorMode, useColorModeValue} from "@chakra-ui/react";
 import {SunIcon, MoonIcon} from "@chakra-ui/icons";
+import {Link} from "react-router-dom";
 
 const Layout: React.FC = ({children}) => {
   const {colorMode, toggleColorMode} = useColorMode();
@@ -16,9 +17,11 @@ const Layout: React.FC = ({children}) => {
           maxWidth="container.xl"
           paddingY={4}
         >
-          <Text fontSize={{base: "xl", sm: "2xl"}} fontWeight="500">
-            Where in the world?
-          </Text>
+          <Link to="/">
+            <Text fontSize={{base: "xl", sm: "2xl"}} fontWeight="500">
+              Where in the world?
+            </Text>
+          </Link>
           <Button
             leftIcon={colorMode === "light" ? <SunIcon /> : <MoonIcon />}
             size="sm"
