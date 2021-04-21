@@ -1,10 +1,18 @@
+import client from "./client";
 import {Country} from "./types";
 
 export default {
-  search: (name: Country["name"]) =>
-    fetch(`https://restcountries.eu/rest/v2/name/${name}`).then((res) => res.json()),
-  list: () => fetch(`https://restcountries.eu/rest/v2/all`).then((res) => res.json()),
-  fetch: (name: Country["name"]) =>
+  search: (name?: Country["name"]): Promise<Country[]> =>
+    fetch(`https://restcountries.eu/rest/v2${name ? `/name/${name}` : `/all`}`)
+      .then((res) => res.json())
+      .then((countries: Country[]) => {
+        countries.forEach((country) => {
+          client.setQueryData(country.name, country);
+        });
+
+        return countries;
+      }),
+  fetch: (name: Country["name"]): Promise<Country> =>
     fetch(`https://restcountries.eu/rest/v2/name/${name}`)
       .then((res) => res.json())
       .then((countries) => countries[0]),
